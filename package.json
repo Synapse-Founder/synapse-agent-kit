@@ -1,6 +1,6 @@
 {
   "name": "synapse-agent-kit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The Decentralized Surety Bond Layer for AI Agents. Compliant with Web Bot Auth.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
