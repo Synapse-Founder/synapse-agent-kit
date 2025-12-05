@@ -148,9 +148,9 @@ MIT License - see LICENSE file for details
 ## 🔗 Links
 
 - [Official Website](https://synapse-arch.com)
-- [GitHub Repository](https://github.com/mavenjang/synapse-agent-kit)
+- [GitHub Repository](https://github.com/Chimera-Founder/synapse-agent-kit)
 - [npm Package](https://www.npmjs.com/package/synapse-agent-kit)
-- [Report Issues](https://github.com/mavenjang/synapse-agent-kit/issues)
+- [Report Issues](https://github.com/Chimera-Founder/synapse-agent-kit/issues)
 
 ## 💡 Support
 
