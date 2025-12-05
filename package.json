@@ -1,0 +1,46 @@
+{
+  "name": "synapse-agent-kit",
+  "version": "1.0.1",
+  "description": "The Decentralized Surety Bond Layer for AI Agents. Compliant with Web Bot Auth.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "pnpm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai-agent",
+    "web-bot-auth",
+    "surety-bond",
+    "synapse-protocol",
+    "anti-bot",
+    "typescript",
+    "sdk",
+    "authentication",
+    "blockchain"
+  ],
+  "author": "Maven Jang <ceo@synapse-arch.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mavenjang/synapse-agent-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mavenjang/synapse-agent-kit/issues"
+  },
+  "homepage": "https://synapse-arch.com",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
