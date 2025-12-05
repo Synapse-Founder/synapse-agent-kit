@@ -25,10 +25,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chimera-Founder/synapse-agent-kit.git"
+    "url": "git+https://github.com/Synapse-Founder/synapse-agent-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/Chimera-Founder/synapse-agent-kit/issues"
+    "url": "https://github.com/Synapse-Founder/synapse-agent-kit/issues"
   },
   "homepage": "https://synapse-arch.com",
   "files": [
