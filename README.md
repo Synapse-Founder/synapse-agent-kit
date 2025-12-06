@@ -2,7 +2,8 @@
 
 [![npm version](https://img.shields.io/npm/v/synapse-agent-kit.svg)](https://www.npmjs.com/package/synapse-agent-kit)
 [![npm downloads](https://img.shields.io/npm/dm/synapse-agent-kit.svg)](https://www.npmjs.com/package/synapse-agent-kit)
-[![license](https://img.shields.io/npm/l/synapse-agent-kit.svg)](https://github.com/Synapse-Founder/synapse-agent-kit/blob/main/LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Chimera-Founder/synapse-agent-kit/main.yml?branch=main)](https://github.com/Chimera-Founder/synapse-agent-kit/actions)
+[![license](https://img.shields.io/npm/l/synapse-agent-kit.svg)](https://github.com/Chimera-Founder/synapse-agent-kit/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](https://www.typescriptlang.org/)
 
 **The Decentralized Surety Bond Layer for AI Agents. Compliant with Web Bot Auth.**
