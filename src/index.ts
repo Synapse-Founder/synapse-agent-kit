@@ -23,7 +23,7 @@ export class Synapse {
   private bondId: string;
   private agentId: string;
   private debug: boolean;
-  private readonly version = '1.0.2';
+  private readonly version = '1.0.3';
 
   constructor(config: SynapseConfig) {
     if (!config.apiKey || !config.bondId) {
