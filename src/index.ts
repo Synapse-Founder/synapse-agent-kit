@@ -1,5 +1,8 @@
 import crypto from 'crypto';
 
+// Universal Test Bond ID for alpha developers (no real value required)
+const TEST_BOND_ID = '0x000000000000000000000000000000000000dead';
+
 export interface SynapseConfig {
   apiKey: string;
   bondId: string;
@@ -20,7 +23,7 @@ export class Synapse {
   private bondId: string;
   private agentId: string;
   private debug: boolean;
-  private readonly version = '1.0.0';
+  private readonly version = '1.0.2';
 
   constructor(config: SynapseConfig) {
     if (!config.apiKey || !config.bondId) {
@@ -31,6 +34,11 @@ export class Synapse {
     this.bondId = config.bondId;
     this.agentId = config.agentId || this.generateAgentId();
     this.debug = config.debug || false;
+
+    // Detect sandbox mode
+    if (this.bondId === TEST_BOND_ID) {
+      console.log('\x1b[33m🟨 SYNAPSE: Running in SANDBOX MODE (No real value bonded)\x1b[0m');
+    }
 
     this.printBanner();
   }
@@ -154,6 +162,12 @@ export class Synapse {
     bondId: string,
     body?: string
   ): boolean {
+    // Bypass cryptographic check for test Bond ID
+    if (bondId === TEST_BOND_ID) {
+      console.log('\x1b[33m🟨 Synapse: Test ID detected. Bypassing cryptographic check.\x1b[0m');
+      return true; // Always allow test ID
+    }
+
     const payload = `${method}:${url}:${timestamp}:${bondId}:${body || ''}`;
     const hmac = crypto.createHmac('sha256', apiKey);
     hmac.update(payload);
