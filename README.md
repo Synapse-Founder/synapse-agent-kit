@@ -47,6 +47,14 @@ Servers can verify these headers and trust your agent because there's real econo
 npm install synapse-agent-kit
 ```
 
+### 🚧 Alpha Testing (No Deposit Required)
+
+**During the Alpha Phase, you can simulate the bonding process without spending real USDC.**
+
+Use the **Universal Test Bond ID** below to verify your integration. The Synapse Validator network is currently configured to treat this ID as a "Sandbox Tier" credential.
+
+**Test Bond ID:** `0x000000000000000000000000000000000000dead`
+
 ### Basic Usage
 
 ```typescript
@@ -54,8 +62,8 @@ import { Synapse } from 'synapse-agent-kit';
 
 // Initialize with your credentials
 const synapse = new Synapse({
-  apiKey: 'sk_live_your_api_key',
-  bondId: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+  apiKey: 'sk_test_key', // Any string works in test mode
+  bondId: '0x000000000000000000000000000000000000dead', // 👈 Use this for testing
   agentId: 'my-agent-v1',
   debug: true
 });
