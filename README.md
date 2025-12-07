@@ -1,59 +1,42 @@
-# 🛡️ Synapse Agent Kit
+# Web Bot Auth SDK (TypeScript)
 
 [![npm version](https://img.shields.io/npm/v/synapse-agent-kit.svg)](https://www.npmjs.com/package/synapse-agent-kit)
-[![npm downloads](https://img.shields.io/npm/dm/synapse-agent-kit.svg)](https://www.npmjs.com/package/synapse-agent-kit)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Chimera-Founder/synapse-agent-kit/main.yml?branch=main)](https://github.com/Chimera-Founder/synapse-agent-kit/actions)
-[![license](https://img.shields.io/npm/l/synapse-agent-kit.svg)](https://github.com/Chimera-Founder/synapse-agent-kit/blob/main/LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 
-**The Decentralized Surety Bond Layer for AI Agents. Compliant with Web Bot Auth.**
-
-Stop getting blocked by Cloudflare, Datadome, and other anti-bot systems. Build trust through cryptographic proof and economic accountability, not IP rotation.
+A lightweight, zero-dependency implementation of the **Web Bot Auth** standard. Automatically signs requests with cryptographic proofs to prevent anti-bot blocking. Compatible with any surety bond provider.
 
 ---
 
-## 🚨 The Problem
+## Overview
 
-Your AI agent works perfectly in testing, but in production:
-- ❌ Cloudflare blocks it with 403 errors
-- ❌ CAPTCHAs appear constantly
-- ❌ Rate limits kick in immediately
-- ❌ IP rotation doesn't help anymore
+Modern web APIs increasingly block automated traffic, even from legitimate AI agents and bots. The **Web Bot Auth** standard solves this by providing a cryptographic identity layer that proves economic accountability without requiring human interaction.
 
-**The real issue?** Your agent has no way to prove it's trustworthy.
+This SDK implements the standard's signature protocol, allowing your TypeScript applications to authenticate as verified bots with minimal code changes.
 
 ---
 
-## ✨ The Solution
+## Features
 
-Synapse Agent Kit implements the **Web Bot Auth** standard with a **Surety Bond** mechanism. Instead of hiding your agent's identity, you cryptographically prove it and back it with economic accountability.
-
-### How It Works
-
-1. **Identity**: Your agent has a unique, verifiable ID
-2. **Bond**: You stake economic value as collateral for good behavior
-3. **Signature**: Every request is cryptographically signed with HMAC-SHA256
-4. **Headers**: Trust proof is automatically injected into HTTP headers
-
-Servers can verify these headers and trust your agent because there's real economic stake backing its behavior.
+- **Drop-in Replacement**: `synapse.fetch()` works exactly like `fetch()` with automatic authentication
+- **Zero Dependencies**: Pure TypeScript implementation with no external packages
+- **Standard Compliant**: Implements Web Bot Auth v1.0 specification
+- **Provider Agnostic**: Works with any bond provider supporting the standard
+- **Cryptographic Signing**: HMAC-SHA256 signatures with replay protection
+- **Server-Side Verification**: Built-in utilities for validating incoming requests
+- **Sandbox Mode**: Test without real bonds using the universal test ID
 
 ---
 
-## 🚀 Quick Start
-
-### Installation
+## Installation
 
 ```bash
 npm install synapse-agent-kit
 ```
 
-### 🚧 Alpha Testing (No Deposit Required)
+---
 
-**During the Alpha Phase, you can simulate the bonding process without spending real USDC.**
-
-Use the **Universal Test Bond ID** below to verify your integration. The Synapse Validator network is currently configured to treat this ID as a "Sandbox Tier" credential.
-
-**Test Bond ID:** `0x000000000000000000000000000000000000dead`
+## Quick Start
 
 ### Basic Usage
 
@@ -62,76 +45,76 @@ import { Synapse } from 'synapse-agent-kit';
 
 // Initialize with your credentials
 const synapse = new Synapse({
-  apiKey: 'sk_test_key', // Any string works in test mode
-  bondId: '0x000000000000000000000000000000000000dead', // 👈 Use this for testing
-  agentId: 'my-agent-v1',
+  apiKey: 'sk_live_your_api_key',
+  bondId: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+  agentId: 'my-agent-v1'
+});
+
+// Use exactly like fetch()
+const response = await synapse.fetch('https://api.example.com/data');
+const data = await response.json();
+```
+
+### Sandbox Mode (Testing)
+
+Test your integration without spending real tokens:
+
+```typescript
+const synapse = new Synapse({
+  apiKey: 'sk_test_key',
+  bondId: '0x000000000000000000000000000000000000dead', // Universal test ID
   debug: true
 });
 
-// Use it exactly like fetch, but with automatic trust headers
-const response = await synapse.fetch('https://api.example.com/data', {
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json'
-  }
-});
-
-const data = await response.json();
-console.log(data);
+// All requests bypass cryptographic verification
+await synapse.fetch('https://api.example.com/test');
 ```
 
-That's it! Your agent is now backed by economic trust.
+When using the test bond ID, you'll see:
+```
+🟨 SYNAPSE: Running in SANDBOX MODE (No real value bonded)
+```
 
 ---
 
-## 🎯 Features
+## How It Works
 
-### 🔐 Economic Trust Layer
-Agents backed by on-chain surety bonds that prove economic accountability.
+The Web Bot Auth standard adds cryptographic headers to HTTP requests:
 
-### 🔑 Cryptographic Authentication
-HMAC-SHA256 signed requests with timestamp-based replay attack prevention.
+1. **Request Signing**: Each request is signed with HMAC-SHA256 using your API key
+2. **Bond Verification**: The `X-Synapse-Bond-Id` header references your on-chain bond
+3. **Replay Protection**: Timestamps prevent request replay attacks
+4. **Server Validation**: APIs verify signatures to confirm bot identity
 
-### 🔄 Drop-in Fetch Replacement
-Works seamlessly with existing code. Just replace `fetch` with `synapse.fetch`.
+### Authentication Headers
 
-### 📘 TypeScript Support
-Full type definitions included for the best developer experience.
-
-### 🪶 Zero Dependencies
-Lightweight and secure. No bloat, no vulnerabilities.
-
-### ⚡ Production Ready
-Battle-tested and used in production environments.
+| Header | Description |
+|--------|-------------|
+| `X-Synapse-Bond-Id` | On-chain surety bond identifier |
+| `X-Synapse-Signature` | HMAC-SHA256 signature of the request |
+| `X-Synapse-Agent-Id` | Unique agent identifier |
+| `X-Synapse-Timestamp` | Request timestamp (replay protection) |
+| `X-Synapse-Version` | Protocol version |
 
 ---
 
-## 📚 API Reference
+## API Reference
 
-### `new Synapse(config)`
+### Constructor
 
-Creates a new Synapse instance.
-
-**Parameters:**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `apiKey` | `string` | ✅ | Your Synapse API key |
-| `bondId` | `string` | ✅ | Your on-chain surety bond ID |
-| `agentId` | `string` | ❌ | Custom agent identifier (auto-generated if not provided) |
-| `debug` | `boolean` | ❌ | Enable debug logging (default: `false`) |
-
-### `synapse.fetch(url, options)`
-
-Drop-in replacement for the native `fetch()` API. Automatically adds Synapse authentication headers.
+```typescript
+new Synapse(config: SynapseConfig)
+```
 
 **Parameters:**
-- `url` (string): The URL to fetch
-- `options` (RequestInit): Standard fetch options
+- `apiKey` (string): Your API key for signing requests
+- `bondId` (string): Your on-chain bond identifier (use `0x000000000000000000000000000000000000dead` for testing)
+- `agentId` (string, optional): Custom agent identifier
+- `debug` (boolean, optional): Enable debug logging
 
-**Returns:** `Promise<Response>`
+### `synapse.fetch(url, options?)`
 
-**Example:**
+Drop-in replacement for the standard `fetch()` API with automatic authentication.
 
 ```typescript
 const response = await synapse.fetch('https://api.example.com/users', {
@@ -145,16 +128,7 @@ const response = await synapse.fetch('https://api.example.com/users', {
 
 ### `synapse.signRequest(method, url, body?)`
 
-Manually generate Synapse authentication headers for a request.
-
-**Parameters:**
-- `method` (string): HTTP method (GET, POST, etc.)
-- `url` (string): The request URL
-- `body` (string, optional): Request body for POST/PUT requests
-
-**Returns:** `SynapseHeaders`
-
-**Example:**
+Manually generate authentication headers for custom HTTP clients.
 
 ```typescript
 const headers = synapse.signRequest('GET', 'https://api.example.com/data');
@@ -164,26 +138,13 @@ console.log(headers);
 //   'X-Synapse-Signature': 'a3f2b1c...',
 //   'X-Synapse-Agent-Id': 'agent_abc123',
 //   'X-Synapse-Timestamp': '1701234567890',
-//   'X-Synapse-Version': '1.0.0'
+//   'X-Synapse-Version': '1.0.3'
 // }
 ```
 
 ### `Synapse.verifySignature(signature, apiKey, method, url, timestamp, bondId, body?)`
 
-Static method for server-side signature verification.
-
-**Parameters:**
-- `signature` (string): The signature to verify
-- `apiKey` (string): The API key used to sign the request
-- `method` (string): HTTP method
-- `url` (string): Request URL
-- `timestamp` (string): Request timestamp
-- `bondId` (string): Bond ID from the request
-- `body` (string, optional): Request body
-
-**Returns:** `boolean`
-
-**Example:**
+Server-side signature verification for incoming requests.
 
 ```typescript
 const isValid = Synapse.verifySignature(
@@ -196,51 +157,19 @@ const isValid = Synapse.verifySignature(
 );
 ```
 
-### `synapse.getConfig()`
-
-Get the current configuration (with sanitized API key).
-
-**Returns:** Object with `bondId`, `agentId`, `version`, and masked `apiKey`
+**Note:** Automatically returns `true` for the universal test bond ID.
 
 ---
 
-## 🌐 Authentication Headers
-
-Synapse automatically adds the following headers to your requests:
-
-| Header | Description |
-|--------|-------------|
-| `X-Synapse-Bond-Id` | Your on-chain surety bond identifier |
-| `X-Synapse-Signature` | HMAC-SHA256 signature of the request |
-| `X-Synapse-Agent-Id` | Your unique agent identifier |
-| `X-Synapse-Timestamp` | Request timestamp for replay protection |
-| `X-Synapse-Version` | Protocol version |
-
----
-
-## 🔐 Security
-
-- **HMAC-SHA256 Signing**: All requests are cryptographically signed
-- **Replay Attack Prevention**: Timestamps prevent request replay
-- **Economic Accountability**: Bond IDs provide real economic stake
-- **Timing-Safe Comparison**: Prevents timing attacks on signature verification
-
----
-
-## 📖 Examples
-
-Check out the `/examples` directory for complete usage examples:
+## Examples
 
 ### Price Monitoring Agent
-
-Monitor product prices across multiple stores without getting blocked.
 
 ```typescript
 const synapse = new Synapse({
   apiKey: 'sk_live_demo_abc123xyz789',
   bondId: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
-  agentId: 'price-monitor-v1',
-  debug: true
+  agentId: 'price-monitor-v1'
 });
 
 const stores = [
@@ -256,9 +185,7 @@ for (const url of stores) {
 }
 ```
 
-### POST Requests
-
-Create alerts and submit data with automatic authentication.
+### POST Requests with Authentication
 
 ```typescript
 const response = await synapse.fetch('https://api.example.com/alerts', {
@@ -274,25 +201,44 @@ const response = await synapse.fetch('https://api.example.com/alerts', {
 });
 ```
 
-### Manual Header Inspection
-
-Inspect the generated headers for debugging or custom implementations.
+### Custom HTTP Client Integration
 
 ```typescript
-const headers = synapse.signRequest(
-  'GET',
-  'https://api.example.com/secure-endpoint'
-);
+import axios from 'axios';
 
-console.log('Generated Synapse Headers:');
-Object.entries(headers).forEach(([key, value]) => {
-  console.log(`${key}: ${value}`);
+const headers = synapse.signRequest('GET', 'https://api.example.com/data');
+
+const response = await axios.get('https://api.example.com/data', {
+  headers: {
+    ...headers,
+    'Accept': 'application/json'
+  }
 });
 ```
 
 ---
 
-## 🤝 Contributing
+## Security
+
+- **HMAC-SHA256 Signing**: Cryptographic request signatures
+- **Replay Attack Prevention**: Timestamp-based request validation
+- **Timing-Safe Comparison**: Prevents timing attacks on signature verification
+- **Economic Accountability**: Bond IDs provide real economic stake (production mode)
+
+---
+
+## Provider Compatibility
+
+This SDK implements the Web Bot Auth standard and works with any compatible bond provider:
+
+- **SYNAPSE**: Reference implementation with Polygon mainnet bonds
+- **Custom Providers**: Any service implementing the standard's signature protocol
+
+To use a different provider, simply provide their bond ID and API key during initialization.
+
+---
+
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -304,31 +250,25 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🔗 Links
+## Links
 
-- [Official Website](https://synapse-arch.com)
 - [GitHub Repository](https://github.com/Synapse-Founder/synapse-agent-kit)
 - [npm Package](https://www.npmjs.com/package/synapse-agent-kit)
 - [Report Issues](https://github.com/Synapse-Founder/synapse-agent-kit/issues)
+- [Web Bot Auth Standard](https://synapse-arch.com) (Reference Implementation)
 
 ---
 
-## 💡 Support
+## Support
 
 For questions and support, please open an issue on GitHub.
 
 ---
 
-## 🌟 Show Your Support
-
-If this project helped you, please consider giving it a ⭐️ on GitHub!
-
----
-
-**Built with ❤️ for the AI agent ecosystem**
+**Built for the AI agent ecosystem**
