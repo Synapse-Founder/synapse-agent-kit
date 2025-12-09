@@ -18,6 +18,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Synapse-Founder/synapse-agent-kit)
 [![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](https://www.typescriptlang.org/)
 [![Standard](https://img.shields.io/badge/Standard-Web%20Bot%20Auth-green.svg)](https://synapse-arch.com)
+[![Awesome Web3](https://img.shields.io/badge/Featured%20in-Awesome%20Web3-orange.svg)](https://github.com/ahmet/awesome-web3)
 
 [Documentation](https://synapse-arch.com) • [NPM Package](https://www.npmjs.com/package/synapse-agent-kit) • [Examples](#examples) • [Contributing](#contributing)
 

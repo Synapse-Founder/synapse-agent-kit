@@ -1,6 +1,6 @@
 {
   "name": "synapse-agent-kit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "TypeScript SDK for Web Bot Auth standard. Lightweight, zero-dependency implementation that adds cryptographic authentication to AI agent requests.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
